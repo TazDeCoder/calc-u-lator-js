@@ -15,7 +15,8 @@ html {
   font-size: 16px;
 }
 body {
-  background-color: #fff;
+  font-family: "Titillium Web", sans-serif;
+  background-color: #f7f7f7;
 }
 nav,
 button,
@@ -30,4 +31,72 @@ video,
 iframe {
   max-width: 100%;
   height: auto;
+}
+:root {
+  --button-background-color: #f7efef;
+  --button-hover-background-color: #e4dede;
+}
+/* Content */
+/* Main */
+#main {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+  height: 70%;
+  margin: 12px auto;
+  font-size: 1rem;
+}
+#title {
+  margin: 12px 0;
+  font-weight: 300;
+  font-size: 3.2em;
+}
+/* Buttons */
+.btn {
+  font-size: 1.4em;
+  font-weight: 400;
+  background-color: var(--button-background-color);
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: var(--button-hover-background-color);
+}
+/* Calculator display */
+#display--label {
+  width: 100%;
+  height: 38px;
+  padding-right: 7px;
+  font-size: 1.5em;
+  text-align: right;
+  border: 1px solid #000;
+}
+#btn--keypad {
+  display: inline-grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 80%;
+  margin: 12px 0;
+}
+#btn--keypad .btn {
+  height: 100%;
+  border: 1px solid #000;
+}
+#btn--operators {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+}
+#btn--operators .btn {
+  width: 20%;
+  margin: 1px;
+  font-size: 2.1em;
+  color: #ff8c00;
+}
+#btn--operators #btn--clear {
+  color: #f00;
 }

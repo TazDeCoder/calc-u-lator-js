@@ -14,9 +14,34 @@
       type="text/css"
       href="./assets/stylesheets/style.css"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400&display=swap" rel="stylesheet">
     <title>Calculator</title>
   </head>
   <body>
+    <main id="main">
+      <h1 id="title">Calculator</h1>
+      <p id="display--label" for="btn--keypad">0</p>
+      <section id="btn--keypad">
+        <button class="btn">7</button>
+        <button class="btn">8</button>
+        <button class="btn">9</button>
+        <button class="btn">4</button>
+        <button class="btn">5</button>
+        <button class="btn">6</button>
+        <button class="btn">1</button>
+        <button class="btn">2</button>
+        <button class="btn">3</button>
+        <button class="btn">&plusmn;</button>
+        <button class="btn">0</button>
+        <button class="btn">&equals;</button>
+      </section>
+      <section id="btn--operators">
+        <button class="btn">&plus;</button>
+        <button class="btn">&minus;</button>
+        <button class="btn">&times;</button>
+        <button class="btn">&divide;</button>
+        <button class="btn" id="btn--clear">C</button>
+      </section>
     <script src="./app.js"></script>
   </body>
 </html>
