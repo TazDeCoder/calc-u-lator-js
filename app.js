@@ -9,17 +9,17 @@ const btnClear = document.querySelector("#btn--clear");
 const btnEquals = document.querySelector("#btn--equals");
 
 // Declare global variables
-let displayValue, currentOperator, currentNum, lastNum, equalsFlag;
+let displayValue, lastOperator, currentNum, lastNum, equalsFlag;
 
 function init() {
   // Initial conditons
   displayValue = "0";
-  currentOperator = "";
+  lastOperator = "";
   currentNum = 0;
   lastNum = 0;
   equalsFlag = false;
   // Clean-up GUI
-  calcDisplay.textContent = displayValue;
+  updateDisplay(displayValue);
 }
 
 function operate(operator, num1, num2) {
@@ -35,49 +35,74 @@ function operate(operator, num1, num2) {
       ans = num1 * num2;
       break;
     case "÷":
-      ans = num1 / num2;
+      ans = num2 !== 0 ? num1 / num2 : 0;
+      if (ans === 0) alert("You Can't Divide By 0!");
       break;
   }
   return ans;
 }
 
-// Button functionalities
-for (let i = 0; i < btnKeypads.length; i++)
-  btnKeypads[i].addEventListener("click", function () {
-    if (displayValue === "0") displayValue = btnKeypads[i].textContent;
-    else displayValue += btnKeypads[i].textContent;
-    // Updates calculator display each time keypad pressed
-    calcDisplay.textContent = displayValue;
-  });
+function updateDisplay(string) {
+  // Updates calculator display
+  calcDisplay.textContent = string;
+}
 
-for (let i = 0; i < btnOperators.length; i++)
+// Button functionalities
+for (let i = 0; i < btnKeypads.length; i++) {
+  btnKeypads[i].addEventListener("mousedown", function () {
+    btnKeypads[i].classList.add("btn--active");
+  });
+  btnKeypads[i].addEventListener("mouseup", function () {
+    btnKeypads[i].classList.remove("btn--active");
+  });
+  btnKeypads[i].addEventListener("click", function () {
+    if (displayValue === "0") displayValue = btnKeypads[i].value;
+    else {
+      if (displayValue.includes(".") && btnKeypads[i].value === ".");
+      else if (displayValue.length <= 13) displayValue += btnKeypads[i].value;
+    }
+    if (lastOperator !== "") lastOperator.classList.remove("btn--active");
+    updateDisplay(displayValue);
+  });
+}
+
+for (let i = 0; i < btnOperators.length; i++) {
+  btnOperators[i].addEventListener("click", function () {
+    btnOperators[i].classList.add("btn--active");
+  });
   btnOperators[i].addEventListener("click", function () {
     if (currentNum !== 0 && !equalsFlag) {
-      lastNum = Number(displayValue)
-      currentNum = operate(currentOperator, currentNum, lastNum);
+      lastNum = Number(displayValue);
+      currentNum = operate(lastOperator.textContent, currentNum, lastNum);
     } else {
       currentNum = Number(displayValue);
       lastNum = 0;
       equalsFlag = false;
     }
-    console.log(currentNum);
-    console.log(lastNum);
-    currentOperator = btnOperators[i].textContent;
+    lastOperator = btnOperators[i];
+    // Reset calculator display value
     displayValue = "0";
-    calcDisplay.textContent = displayValue;
+    updateDisplay(displayValue);
   });
+}
 
 btnClear.addEventListener("click", function () {
   init();
 });
 
 btnEquals.addEventListener("click", function () {
-  lastNum = Number(displayValue);
-  currentNum = operate(currentOperator, currentNum, lastNum);
-  lastNum = 0;
-  equalsFlag = true;
-  calcDisplay.textContent = currentNum;
-  displayValue = currentNum;
+  displayValue = calcDisplay.textContent;
+  if ((currentNum === Number(displayValue) && equalsFlag) || currentNum !== 0) {
+    if (!equalsFlag) {
+      lastNum = Number(displayValue);
+      currentNum = operate(lastOperator.textContent, currentNum, lastNum);
+    }
+    lastNum = 0;
+    equalsFlag = true;
+    displayValue = String(currentNum);
+    lastOperator.classList.remove("btn--active");
+    updateDisplay(displayValue);
+  }
 });
 
 // Main code execution
