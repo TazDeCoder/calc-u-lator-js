@@ -47,6 +47,17 @@ function updateDisplay(string) {
   calcDisplay.textContent = string;
 }
 
+function keypadPressEvent(value) {
+  // Trigger whenever a calculator keypad is activated
+  if (displayValue === "0") displayValue = value;
+  else {
+    if (displayValue.includes(".") && value === ".");
+    else if (displayValue.length <= 13) displayValue += value;
+  }
+  if (lastOperator !== "") lastOperator.classList.remove("btn--active");
+  updateDisplay(displayValue);
+}
+
 // Button functionalities
 for (let i = 0; i < btnKeypads.length; i++) {
   btnKeypads[i].addEventListener("mousedown", function () {
@@ -56,13 +67,7 @@ for (let i = 0; i < btnKeypads.length; i++) {
     btnKeypads[i].classList.remove("btn--active");
   });
   btnKeypads[i].addEventListener("click", function () {
-    if (displayValue === "0") displayValue = btnKeypads[i].value;
-    else {
-      if (displayValue.includes(".") && btnKeypads[i].value === ".");
-      else if (displayValue.length <= 13) displayValue += btnKeypads[i].value;
-    }
-    if (lastOperator !== "") lastOperator.classList.remove("btn--active");
-    updateDisplay(displayValue);
+    keypadPressEvent(btnKeypads[i].btnKeypads[i].value);
   });
 }
 
@@ -103,6 +108,18 @@ btnEquals.addEventListener("click", function () {
     lastOperator.classList.remove("btn--active");
     updateDisplay(displayValue);
   }
+});
+
+// Keyboard events
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Backspace") {
+    displayValue = displayValue.slice(0, -1);
+    updateDisplay(displayValue);
+  }
+});
+
+document.addEventListener("keydown", function (e) {
+  if (e.key.match(/\d/g)) keypadPressEvent(e.key);
 });
 
 // Main code execution
