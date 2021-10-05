@@ -18,31 +18,32 @@
     <title>Calculator</title>
   </head>
   <body>
+    <h1 id="title">Calculator</h1>
     <main id="main">
-      <h1 id="title">Calculator</h1>
       <p id="display--label" for="btn--keypad">0</p>
-      <section id="btn--keypads">
-        <button class="btn keypad">7</button>
-        <button class="btn keypad">8</button>
-        <button class="btn keypad">9</button>
-        <button class="btn keypad">4</button>
-        <button class="btn keypad">5</button>
-        <button class="btn keypad">6</button>
-        <button class="btn keypad">1</button>
-        <button class="btn keypad">2</button>
-        <button class="btn keypad">3</button>
-        <button class="btn keypad">&plusmn;</button>
-        <button class="btn keypad">0</button>
-        <button class="btn keypad">00</button>
+      <section id="btn--dock">
+        <button class="btn keypad" value="7">7</button>
+        <button class="btn keypad" value="8">8</button>
+        <button class="btn keypad" value="9">9</button>
+        <button class="btn keypad" value="4">4</button>
+        <button class="btn keypad" value="5">5</button>
+        <button class="btn keypad" value="6">6</button>
+        <button class="btn keypad" value="1">1</button>
+        <button class="btn keypad" value="2">2</button>
+        <button class="btn keypad" value="3">3</button>
+        <button class="btn keypad" value="-">&plusmn;</button>
+        <button class="btn keypad" value="0">0</button>
+        <button class="btn keypad" value=".">.</button>
+        <button class="btn keypad" value="00">00</button>
+        <button class="btn" id="btn--clear">C</button>
       </section>
-      <section id="btn--operators">
+      <section id="btn--aside">
         <button class="btn operator">&plus;</button>
         <button class="btn operator">&minus;</button>
         <button class="btn operator">&times;</button>
         <button class="btn operator">&divide;</button>
+        <button class="btn" id="btn--equals">&equals;</button>
       </section>
-      <button class="btn" id="btn--clear">C</button>
-      <button class="btn" id="btn--equals">&equals;</button>
     <script src="./app.js"></script>
   </body>
 </html>
