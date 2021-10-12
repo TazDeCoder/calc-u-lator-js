@@ -135,10 +135,29 @@ btnEquals.addEventListener("click", displayCalculation);
 document.addEventListener("keydown", function (e) {
   // Number keyboard input
   if (e.key.match(/\d/g)) keypadTriggered(e.key);
-  // Undo number on calcDisplay
-  if (e.key === "Backspace") {
-    displayValue = displayValue.slice(0, -1);
-    updateDisplay(displayValue);
+  switch (e.key) {
+    case "backspace":
+      displayValue = displayValue.slice(0, -1);
+      updateDisplay(displayValue);
+      break;
+    case "=":
+      return displayCalculation();
+    case "+":
+      operatorTriggered(plusOperator);
+      resetDisplay();
+      break;
+    case "-":
+      operatorTriggered(minusOperator);
+      resetDisplay();
+      break;
+    case "*":
+      operatorTriggered(timesOperator);
+      resetDisplay();
+      break;
+    case "/":
+      operatorTriggered(divideOperator);
+      resetDisplay();
+      break;
   }
 });
 
