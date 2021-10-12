@@ -1,125 +1,145 @@
 "use strict";
 
 // Selecting elements
-const calcDisplay = document.querySelector("#display--label");
+const displayLbl = document.querySelector("#display--label");
 // Buttons
-const btnKeypads = document.querySelectorAll(".keypad");
-const btnOperators = document.querySelectorAll(".operator");
+// --- KEYPADS ---
+const btnKeypads = document
+  .querySelector("#btn--dock")
+  .getElementsByClassName("keypad");
+// --- OPERATORS ---
+const btnOperators = document
+  .querySelector("#btn--aside")
+  .getElementsByClassName("operator");
+const [plusOperator, minusOperator, timesOperator, divideOperator] =
+  btnOperators;
 const btnClear = document.querySelector("#btn--clear");
 const btnEquals = document.querySelector("#btn--equals");
 
 // Declare global variables
-let displayValue, lastOperator, currentNum, lastNum, equalsFlag;
+let displayValue, tempNum, currentOperator, equalsFlag;
+
+const calculator = {
+  currentNum: 0,
+  operate: function (operator, num1, num2) {
+    switch (operator) {
+      case "+":
+        return num1 + num2;
+      case "-":
+        return num1 - num2;
+      case "*":
+        return num1 * num2;
+      case "/":
+        const ans = num2 !== 0 ? num1 / num2 : 0;
+        if (ans === 0) alert("You Can't Divide By 0!");
+        return ans;
+    }
+  },
+};
 
 function init() {
-  // Initial conditons
-  displayValue = "0";
-  lastOperator = "";
-  currentNum = 0;
-  lastNum = 0;
+  // Reset conditons
+  calculator.currentNum = 0;
   equalsFlag = false;
+  tempNum = 0;
   // Clean-up GUI
+  if (currentOperator) deactivateOperator();
+  currentOperator = "";
+  resetDisplay();
+}
+
+const updateDisplay = (string) => (displayLbl.textContent = string);
+const resetDisplay = () => {
+  displayValue = "0";
   updateDisplay(displayValue);
-}
+};
 
-function operate(operator, num1, num2) {
-  let ans;
-  switch (operator) {
-    case "+":
-      ans = num1 + num2;
-      break;
-    case "−":
-      ans = num1 - num2;
-      break;
-    case "×":
-      ans = num1 * num2;
-      break;
-    case "÷":
-      ans = num2 !== 0 ? num1 / num2 : 0;
-      if (ans === 0) alert("You Can't Divide By 0!");
-      break;
-  }
-  return ans;
-}
+const deactivateOperator = () =>
+  currentOperator.classList.remove("btn--active");
 
-function updateDisplay(string) {
-  // Updates calculator display
-  calcDisplay.textContent = string;
-}
-
-function keypadPressEvent(value) {
-  // Trigger whenever a calculator keypad is activated
+function keypadTriggered(value) {
   if (displayValue === "0") displayValue = value;
   else {
+    // Prevents more than one decimal occurance
     if (displayValue.includes(".") && value === ".");
-    else if (displayValue.length <= 13) displayValue += value;
+    else if (displayValue.length <= 13)
+      // Prevents the displayLbl exceeding 13 characters
+      displayValue += value;
   }
-  if (lastOperator !== "") lastOperator.classList.remove("btn--active");
+  if (currentOperator !== "") deactivateOperator();
   updateDisplay(displayValue);
+}
+
+function operatorTriggered(operator) {
+  if (operator !== currentOperator && currentOperator) deactivateOperator();
+  currentOperator = operator;
+  operator.classList.add("btn--active");
+  if (calculator.currentNum !== 0 && !equalsFlag) {
+    tempNum = Number(displayValue);
+    calculator.currentNum = calculator.operate(
+      currentOperator.value,
+      calculator.currentNum,
+      tempNum
+    );
+  } else {
+    calculator.currentNum = Number(displayValue);
+    tempNum = 0;
+    equalsFlag = false;
+  }
+}
+
+function displayCalculation() {
+  displayValue = displayLbl.textContent;
+  if (calculator.currentNum !== 0) {
+    if (!equalsFlag) {
+      // Continues to operate on currentNum using currentOperator
+      tempNum = Number(displayValue);
+      calculator.currentNum = calculator.operate(
+        currentOperator.value,
+        calculator.currentNum,
+        tempNum
+      );
+    }
+    tempNum = 0;
+    equalsFlag = true;
+    displayValue = String(calculator.currentNum);
+    deactivateOperator();
+    updateDisplay(displayValue);
+  }
 }
 
 // Button functionalities
-for (let i = 0; i < btnKeypads.length; i++) {
-  btnKeypads[i].addEventListener("mousedown", function () {
-    btnKeypads[i].classList.add("btn--active");
+for (const btn of btnKeypads) {
+  // Emulates visual tap event
+  btn.addEventListener("mousedown", function () {
+    btn.classList.add("btn--active");
   });
-  btnKeypads[i].addEventListener("mouseup", function () {
-    btnKeypads[i].classList.remove("btn--active");
+  btn.addEventListener("mouseup", function () {
+    btn.classList.remove("btn--active");
   });
-  btnKeypads[i].addEventListener("click", function () {
-    keypadPressEvent(btnKeypads[i].btnKeypads[i].value);
-  });
-}
-
-for (let i = 0; i < btnOperators.length; i++) {
-  btnOperators[i].addEventListener("click", function () {
-    btnOperators[i].classList.add("btn--active");
-  });
-  btnOperators[i].addEventListener("click", function () {
-    if (currentNum !== 0 && !equalsFlag) {
-      lastNum = Number(displayValue);
-      currentNum = operate(lastOperator.textContent, currentNum, lastNum);
-    } else {
-      currentNum = Number(displayValue);
-      lastNum = 0;
-      equalsFlag = false;
-    }
-    lastOperator = btnOperators[i];
-    // Reset calculator display value
-    displayValue = "0";
-    updateDisplay(displayValue);
+  // Registers keypad
+  btn.addEventListener("click", function () {
+    keypadTriggered(btn.value);
   });
 }
-
-btnClear.addEventListener("click", function () {
-  init();
-});
-
-btnEquals.addEventListener("click", function () {
-  displayValue = calcDisplay.textContent;
-  if ((currentNum === Number(displayValue) && equalsFlag) || currentNum !== 0) {
-    if (!equalsFlag) {
-      lastNum = Number(displayValue);
-      currentNum = operate(lastOperator.textContent, currentNum, lastNum);
-    }
-    lastNum = 0;
-    equalsFlag = true;
-    displayValue = String(currentNum);
-    lastOperator.classList.remove("btn--active");
-    updateDisplay(displayValue);
-  }
-});
+for (const btn of btnOperators) {
+  btn.addEventListener("click", function () {
+    operatorTriggered(btn);
+    resetDisplay();
+  });
+}
+btnClear.addEventListener("click", init);
+btnEquals.addEventListener("click", displayCalculation);
 
 // Keyboard events
 document.addEventListener("keydown", function (e) {
+  // Number keyboard input
+  if (e.key.match(/\d/g)) keypadTriggered(e.key);
+  // Undo number on calcDisplay
   if (e.key === "Backspace") {
     displayValue = displayValue.slice(0, -1);
     updateDisplay(displayValue);
   }
-});
-
-document.addEventListener("keydown", function (e) {
-  if (e.key.match(/\d/g)) keypadPressEvent(e.key);
 });
 
 // Main code execution
