@@ -143,14 +143,17 @@ operatorValues.forEach(function (operator) {
 });
 
 // --- KEYBOARD SUPPORT
-document.addEventListener("keydown", function (e) {
-  // Number keyboard input
+document.addEventListener("keyup", function (e) {
+  // Number keyboard input [0 - 9]
   if (e.key.match(/\d/g)) return keypadTriggered(e.key);
-  switch (e.key) {
+  // General keyboard input use case
+  switch (e.key.toLowerCase()) {
+    case "escape":
+      return init();
     case "backspace":
       displayStr.splice(0, -1);
       return updateDisplay();
-    case "=":
+    case "enter":
       return displayCalc();
     case "+":
       operatorTriggered(plusOperator);
