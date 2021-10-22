@@ -1,27 +1,25 @@
 "use strict";
 
-// Selecting elements
-const displayLbl = document.querySelector("#display--label");
+// Selecting HTML elements
+const labelDisplay = document.querySelector("#display--label");
 // Buttons
-const btnClear = document.querySelector("#btn--clear");
-const btnEquals = document.querySelector("#btn--equals");
 // --- KEYPADS ---
 const btnKeypads = document
   .querySelector("#btn--dock")
   .getElementsByClassName("keypad");
-const keypadValues = Object.values(btnKeypads);
 // --- OPERATORS ---
 const btnOperators = document
   .querySelector("#btn--aside")
   .getElementsByClassName("operator");
-const operatorValues = Object.values(btnOperators);
-const [plusOperator, minusOperator, timesOperator, divideOperator] =
-  btnOperators;
+const [btnPlus, btnMinus, btnTimes, btnDivide] = btnOperators;
+// --- OTHERS ---
+const btnClear = document.querySelector("#btn--clear");
+const btnEquals = document.querySelector("#btn--equals");
 
-// Initialise variables
-let displayStr, currOperator, currNum, tempNum, equalsFlag;
+// Initialize variables
+let currNum, currOper;
 
-// Object that performs all of our calculations
+// Object that performs math calculations
 const calculator = {
   add(num1, num2) {
     return num1 + num2;
@@ -41,59 +39,64 @@ const calculator = {
 
 function init() {
   // Reset conditons
-  currOperator = "";
   currNum = 0;
-  tempNum = 0;
-  equalsFlag = false;
+  currOper = "";
   // Clean-up GUI
-  if (currOperator) deactivateOperator();
-  resetDisplay();
+  btnEquals.classList.remove("btn--active");
+  if (currOper) deactivateOperator();
+  updateDisplay("0");
 }
 
-// App GUI functions
-function resetDisplay() {
-  displayStr = "0";
-  updateDisplay();
-}
-
-function updateDisplay() {
-  displayLbl.textContent = displayStr;
+// App GUI Functions
+function updateDisplay(str) {
+  labelDisplay.textContent = str;
 }
 
 function deactivateOperator() {
-  currOperator.classList.remove("btn--active");
+  currOper.classList.remove("btn--active");
 }
 
 function keypadTriggered(val) {
-  if (!equalsFlag) {
-    if (displayStr === "0") displayStr = val;
+  const displayStr = labelDisplay.textContent;
+  if (!btnEquals.classList.contains("btn--active")) {
+    if (displayStr === "0") updateDisplay(val);
     else {
       // Prevents > 1 decimal occurance in input string
       // and displayLbl exceeding > 13 chars
       if (!(displayStr.includes(".") && val === ".") && displayStr.length <= 13)
-        displayStr += val;
+        updateDisplay(displayStr.concat(val));
     }
-    if (currOperator) deactivateOperator();
-    updateDisplay();
+    if (currOper) deactivateOperator();
   }
+}
+
+function operatorTriggered(oper) {
+  const equalsClasses = btnEquals.classList;
+  if (oper !== currOper && currOper) deactivateOperator();
+  currOper = oper;
+  currOper.classList.add("btn--active");
+  if (currNum && !equalsClasses.contains("btn--active")) calcNumbers();
+  else {
+    currNum = Number(labelDisplay.textContent);
+    equalsClasses.remove("btn--active");
+  }
+  updateDisplay("0");
 }
 
 function displayCalc() {
-  displayStr = displayLbl.textContent;
+  const equalsClasses = btnEquals.classList;
   if (currNum) {
-    if (!equalsFlag) calcNumbers();
-    tempNum = 0;
-    equalsFlag = true;
-    displayStr = String(currNum);
+    if (!equalsClasses.contains("btn--active")) calcNumbers();
+    equalsClasses.add("btn--active");
     deactivateOperator();
-    updateDisplay();
+    updateDisplay(currNum);
   }
 }
 
-// App logic functions
+// App Logic Functions
 function calcNumbers() {
-  tempNum = Number(displayStr);
-  switch (currOperator.value) {
+  const tempNum = Number(labelDisplay.textContent);
+  switch (currOper.value) {
     case "+":
       return (currNum = calculator.add(currNum, tempNum));
     case "-":
@@ -105,44 +108,31 @@ function calcNumbers() {
   }
 }
 
-function operatorTriggered(operator) {
-  if (operator !== currOperator && currOperator) deactivateOperator();
-  currOperator = operator;
-  currOperator.classList.add("btn--active");
-  if (currNum && !equalsFlag) calcNumbers();
-  else {
-    currNum = Number(displayStr);
-    tempNum = 0;
-    equalsFlag = false;
-  }
-}
+// Event handlers
+Object.values(btnKeypads).forEach(function (btn) {
+  // Registers keypad
+  btn.addEventListener("click", function () {
+    keypadTriggered(btn.value);
+  });
+  // Emulates visual tap event
+  btn.addEventListener("mousedown", function () {
+    btn.classList.add("btn--active");
+  });
+  btn.addEventListener("mouseup", function () {
+    btn.classList.remove("btn--active");
+  });
+});
 
-// Button functionalities
+Object.values(btnOperators).forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    operatorTriggered(btn);
+  });
+});
+
 btnClear.addEventListener("click", init);
 btnEquals.addEventListener("click", displayCalc);
 
-keypadValues.forEach(function (keypad) {
-  // Registers keypad
-  keypad.addEventListener("click", function () {
-    keypadTriggered(keypad.value);
-  });
-  // Emulates visual tap event
-  keypad.addEventListener("mousedown", function () {
-    keypad.classList.add("btn--active");
-  });
-  keypad.addEventListener("mouseup", function () {
-    keypad.classList.remove("btn--active");
-  });
-});
-
-operatorValues.forEach(function (operator) {
-  operator.addEventListener("click", function () {
-    operatorTriggered(operator);
-    resetDisplay();
-  });
-});
-
-// --- KEYBOARD SUPPORT
+// --- KEYBOARD SUPPORT ---
 document.addEventListener("keyup", function (e) {
   // Number keyboard input [0 - 9]
   if (e.key.match(/\d/g)) return keypadTriggered(e.key);
@@ -151,24 +141,20 @@ document.addEventListener("keyup", function (e) {
     case "escape":
       return init();
     case "backspace":
-      displayStr.splice(0, -1);
-      return updateDisplay();
+      return updateDisplay(labelDisplay.textContent.slice(0, -1));
     case "enter":
       return displayCalc();
     case "+":
-      operatorTriggered(plusOperator);
-      break;
+      return operatorTriggered(btnPlus);
     case "-":
-      operatorTriggered(minusOperator);
-      break;
+      return operatorTriggered(btnMinus);
     case "*":
-      operatorTriggered(timesOperator);
-      break;
+      return operatorTriggered(btnTimes);
     case "/":
-      operatorTriggered(divideOperator);
-      break;
+      return operatorTriggered(btnDivide);
+    case ".":
+      return keypadTriggered(e.key);
     default:
-      return null;
+      return;
   }
-  resetDisplay();
 });
