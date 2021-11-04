@@ -1,4 +1,3 @@
-/* Universal styles */
 *,
 *:before,
 *:after {
@@ -37,22 +36,21 @@ iframe {
   --button-hover-background-color: #003ea1;
   --button-active-background-color: #d1681d;
 }
+
 /* Content */
-#title {
-  width: 90%;
-  margin: 12px auto;
-  font-family: "Titillium Web", sans-serif;
-  font-weight: 300;
-  font-size: 3.7rem;
-  color: #fff;
-  cursor: default;
-}
-/* Main */
-#main {
+
+/* 
+ * Main 
+ *
+ *
+ *
+ */
+
+.main {
   display: flex;
   flex-wrap: wrap;
   width: 90%;
-  height: 80%;
+  height: 100%;
   padding: 12px;
   margin: 12px auto;
   font-size: 1rem;
@@ -61,20 +59,18 @@ iframe {
   background-color: #adff2f;
   cursor: url("/assets/images/cursors/default.cur"), auto;
 }
-/* Buttons */
-.btn {
-  background-color: var(--button-background-color);
-  cursor: pointer;
-}
-.btn:hover {
-  background-color: var(--button-hover-background-color);
-  cursor: url("/assets/images/cursors/pointer.cur"), auto;
-}
-.btn--active:hover {
-  background-color: var(--button-active-background-color);
+.main__title {
+  width: 90%;
+  margin: 12px auto;
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 300;
+  font-size: 3.2em;
+  text-align: center;
+  color: #fff;
+  cursor: default;
 }
 /* Calculator display */
-#display--label {
+.label--display {
   width: 100%;
   height: 38px;
   padding: 4px;
@@ -86,12 +82,25 @@ iframe {
   cursor: pointer;
   overflow: auto;
 }
-#display--label:hover {
+.label--display:hover {
   background-color: #7a8585;
   cursor: url("/assets/images/cursors/pointer.cur"), auto;
 }
+
+/* Buttons */
+.keypad__btn {
+  background-color: var(--button-background-color);
+  cursor: pointer;
+}
+.keypad__btn:hover {
+  background-color: var(--button-hover-background-color);
+  cursor: url("/assets/images/cursors/pointer.cur"), auto;
+}
+.keypad__btn--active:hover {
+  background-color: var(--button-active-background-color);
+}
 /* Keypads */
-#btn--dock {
+.keypad--dock {
   display: inline-grid;
   grid-template-rows: repeat(4, 1fr);
   grid-row-gap: 2px;
@@ -104,7 +113,7 @@ iframe {
   font-size: 1em;
   text-align: center;
 }
-#btn--dock .btn {
+.keypad--dock .keypad__btn {
   height: 100%;
   font-family: monospace;
   font-weight: 500;
@@ -112,20 +121,20 @@ iframe {
   border: 2px solid #000;
   border-radius: 5px;
 }
-#btn--clear {
+.keypad__btn--clear {
   grid-column: 2 / 4;
   font-size: 2.9em;
   color: #ffc400;
 }
 /* Button operators */
-#btn--aside {
+.keypad--aside {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 30%;
 }
-#btn--aside .btn {
+.keypad--aside .keypad__btn {
   width: 50%;
   margin: 1px;
   font-weight: 600;
@@ -133,6 +142,6 @@ iframe {
   color: #fff700;
   border: 2px solid #000;
 }
-#btn--aside .btn--active {
+.keypad--aside .keypad__btn--active {
   background-color: var(--button-active-background-color);
 }

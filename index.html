@@ -18,31 +18,31 @@
     <title>Calculator</title>
   </head>
   <body>
-    <h1 id="title">Calculator</h1>
-    <main id="main">
-      <p id="display--label" for="btn--keypad">0</p>
-      <section id="btn--dock">
-        <button class="btn keypad" value="7">7</button>
-        <button class="btn keypad" value="8">8</button>
-        <button class="btn keypad" value="9">9</button>
-        <button class="btn keypad" value="4">4</button>
-        <button class="btn keypad" value="5">5</button>
-        <button class="btn keypad" value="6">6</button>
-        <button class="btn keypad" value="1">1</button>
-        <button class="btn keypad" value="2">2</button>
-        <button class="btn keypad" value="3">3</button>
-        <button class="btn keypad" value="-">&plusmn;</button>
-        <button class="btn keypad" value="0">0</button>
-        <button class="btn keypad" value=".">.</button>
-        <button class="btn keypad" value="00">00</button>
-        <button class="btn" value="clear" id="btn--clear">C</button>
+    <main class="main">
+      <h1 class="main__title">Calculator</h1>
+      <p class="label label--display">0</p>
+      <section class="keypad keypad--dock">
+        <button class="keypad__btn" value="7">7</button>
+        <button class="keypad__btn" value="8">8</button>
+        <button class="keypad__btn" value="9">9</button>
+        <button class="keypad__btn" value="4">4</button>
+        <button class="keypad__btn" value="5">5</button>
+        <button class="keypad__btn" value="6">6</button>
+        <button class="keypad__btn" value="1">1</button>
+        <button class="keypad__btn" value="2">2</button>
+        <button class="keypad__btn" value="3">3</button>
+        <button class="keypad__btn" value="-">&plusmn;</button>
+        <button class="keypad__btn" value="0">0</button>
+        <button class="keypad__btn" value=".">.</button>
+        <button class="keypad__btn" value="00">00</button>
+        <button class="keypad__btn keypad__btn--clear" value="clear">C</button>
       </section>
-      <section id="btn--aside">
-        <button class="btn operator" value="+">&plus;</button>
-        <button class="btn operator" value="-">&minus;</button>
-        <button class="btn operator" value="*">&times;</button>
-        <button class="btn operator" value="/">&divide;</button>
-        <button class="btn" value="=" id="btn--equals">&equals;</button>
+      <section class="keypad keypad--aside">
+        <button class="keypad__btn keypad__btn--plus" value="+">&plus;</button>
+        <button class="keypad__btn keypad__btn--minus" value="-">&minus;</button>
+        <button class="keypad__btn keypad__btn--times" value="*">&times;</button>
+        <button class="keypad__btn keypad__btn--divide" value="/">&divide;</button>
+        <button class="keypad__btn keypad__btn--equals" value="=">&equals;</button>
       </section>
     <script src="./app.js"></script>
   </body>

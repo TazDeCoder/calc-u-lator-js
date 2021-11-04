@@ -1,22 +1,26 @@
 "use strict";
 
-// Selecting HTML elements
-const labelDisplay = document.querySelector("#display--label");
-// Buttons
-// --- KEYPADS ---
-const btnKeypads = document
-  .querySelector("#btn--dock")
-  .getElementsByClassName("keypad");
-// --- OPERATORS ---
-const btnOperators = document
-  .querySelector("#btn--aside")
-  .getElementsByClassName("operator");
-const [btnPlus, btnMinus, btnTimes, btnDivide] = btnOperators;
-// --- OTHERS ---
-const btnClear = document.querySelector("#btn--clear");
-const btnEquals = document.querySelector("#btn--equals");
+////////////////////////////////////////////////
+////// Selecting HTML elements
+///////////////////////////////////////////////
 
-// Initialize variables
+// Labels
+const labelDisplay = document.querySelector(".label--display");
+// Buttons
+const btnPlus = document.querySelector(".keypad__btn--plus");
+const btnMinus = document.querySelector(".keypad__btn--minus");
+const btnTimes = document.querySelector(".keypad__btn--times");
+const btnDivide = document.querySelector(".keypad__btn--divide");
+const btnClear = document.querySelector(".keypad__btn--clear");
+const btnEquals = document.querySelector(".keypad__btn--equals");
+// Parents
+const keypadDock = document.querySelector(".keypad--dock");
+const keypadAside = document.querySelector(".keypad--aside");
+
+////////////////////////////////////////////////
+////// Global variables
+///////////////////////////////////////////////
+
 let currNum, currOper;
 
 // Object that performs math calculations
@@ -39,26 +43,28 @@ const calculator = {
 
 function init() {
   // Reset conditons
-  currNum = 0;
   currOper = "";
+  currNum = 0;
   // Clean-up GUI
-  btnEquals.classList.remove("btn--active");
-  if (currOper) deactivateOperator();
-  updateDisplay("0");
+  const [...btns] = keypadAside.querySelectorAll(".keypad__btn");
+  btns.forEach((btn) => btn.classList.remove("keypad__btn--active"));
+  labelDisplay.textContent = "0";
 }
 
-// App GUI Functions
-function updateDisplay(str) {
-  labelDisplay.textContent = str;
-}
+////////////////////////////////////////////////
+////// App UI Setup
+///////////////////////////////////////////////
 
-function deactivateOperator() {
-  currOper.classList.remove("btn--active");
+const updateDisplay = (str) => (labelDisplay.textContent = str);
+
+function deactivateOperators() {
+  const [...btns] = keypadAside.querySelectorAll(".keypad__btn");
+  btns.forEach((btn) => btn.classList.remove("keypad__btn--active"));
 }
 
 function keypadTriggered(val) {
   const displayStr = labelDisplay.textContent;
-  if (!btnEquals.classList.contains("btn--active")) {
+  if (!btnEquals.classList.contains("keypad__btn--active")) {
     if (displayStr === "0") updateDisplay(val);
     else {
       // Prevents > 1 decimal occurance in input string
@@ -66,95 +72,105 @@ function keypadTriggered(val) {
       if (!(displayStr.includes(".") && val === ".") && displayStr.length <= 13)
         updateDisplay(displayStr.concat(val));
     }
-    if (currOper) deactivateOperator();
+    deactivateOperators();
   }
 }
 
-function operatorTriggered(oper) {
-  const equalsClasses = btnEquals.classList;
-  if (oper !== currOper && currOper) deactivateOperator();
-  currOper = oper;
-  currOper.classList.add("btn--active");
-  if (currNum && !equalsClasses.contains("btn--active")) calcNumbers();
-  else {
-    currNum = Number(labelDisplay.textContent);
-    equalsClasses.remove("btn--active");
-  }
+function operatorTriggered() {
+  currOper = this;
+  if (currNum && !btnEquals.classList.contains("keypad__btn--active"))
+    calcNumbers(currOper);
+  else currNum = +labelDisplay.textContent;
+
+  deactivateOperators();
+  this.classList.add("keypad__btn--active");
   updateDisplay("0");
 }
 
 function displayCalc() {
-  const equalsClasses = btnEquals.classList;
   if (currNum) {
-    if (!equalsClasses.contains("btn--active")) calcNumbers();
-    equalsClasses.add("btn--active");
-    deactivateOperator();
+    calcNumbers(currOper);
+    deactivateOperators();
+    btnEquals.classList.add("keypad__btn--active");
+    btnEquals.blur();
     updateDisplay(currNum);
   }
 }
 
-// App Logic Functions
-function calcNumbers() {
-  const tempNum = Number(labelDisplay.textContent);
-  switch (currOper.value) {
+////////////////////////////////////////////////
+////// App Logic
+///////////////////////////////////////////////
+
+function calcNumbers(oper) {
+  const tempNum = +labelDisplay.textContent;
+  console.log(currNum, tempNum);
+  switch (oper.value) {
     case "+":
-      return (currNum = calculator.add(currNum, tempNum));
+      currNum = calculator.add(currNum, tempNum);
+      break;
     case "-":
-      return (currNum = calculator.subtract(currNum, tempNum));
+      currNum = calculator.subtract(currNum, tempNum);
+      break;
     case "*":
-      return (currNum = calculator.multiply(currNum, tempNum));
+      currNum = calculator.multiply(currNum, tempNum);
+      break;
     case "/":
-      return (currNum = calculator.divide(currNum, tempNum));
+      currNum = calculator.divide(currNum, tempNum);
+      break;
   }
 }
 
-// Event handlers
-Object.values(btnKeypads).forEach(function (btn) {
-  // Registers keypad
-  btn.addEventListener("click", function () {
-    keypadTriggered(btn.value);
-  });
-  // Emulates visual tap event
-  btn.addEventListener("mousedown", function () {
-    btn.classList.add("btn--active");
-  });
-  btn.addEventListener("mouseup", function () {
-    btn.classList.remove("btn--active");
-  });
+////////////////////////////////////////////////
+////// Event Handlers
+///////////////////////////////////////////////
+
+keypadDock.addEventListener("click", function (e) {
+  const clicked = e.target;
+  if (!clicked) return;
+  if (
+    clicked.classList.contains("keypad__btn") &&
+    !clicked.classList.contains("keypad__btn--clear")
+  )
+    keypadTriggered(clicked.value);
 });
 
-Object.values(btnOperators).forEach(function (btn) {
-  btn.addEventListener("click", function () {
-    operatorTriggered(btn);
-  });
+keypadAside.addEventListener("click", function (e) {
+  const clicked = e.target;
+  if (!clicked) return;
+  if (
+    clicked.classList.contains("keypad__btn") &&
+    !clicked.classList.contains("keypad__btn--equals")
+  )
+    operatorTriggered.call(clicked);
 });
 
 btnClear.addEventListener("click", init);
 btnEquals.addEventListener("click", displayCalc);
 
 // --- KEYBOARD SUPPORT ---
+
 document.addEventListener("keyup", function (e) {
+  const keypress = e.key;
   // Number keyboard input [0 - 9]
-  if (e.key.match(/\d/g)) return keypadTriggered(e.key);
+  if (keypress.match(/\d/g)) return keypadTriggered(keypress);
   // General keyboard input use case
-  switch (e.key.toLowerCase()) {
-    case "escape":
+  if (!keypress) return;
+  switch (keypress) {
+    case "Escape":
       return init();
-    case "backspace":
+    case "Backspace":
       return updateDisplay(labelDisplay.textContent.slice(0, -1));
-    case "enter":
-      return displayCalc();
+    case "Enter":
+      return displayCalc;
     case "+":
-      return operatorTriggered(btnPlus);
+      return operatorTriggered.call(btnPlus);
     case "-":
-      return operatorTriggered(btnMinus);
+      return operatorTriggered.call(btnMinus);
     case "*":
-      return operatorTriggered(btnTimes);
+      return operatorTriggered.call(btnTimes);
     case "/":
-      return operatorTriggered(btnDivide);
+      return operatorTriggered.call(btnDivide);
     case ".":
-      return keypadTriggered(e.key);
-    default:
-      return;
+      return keypadTriggered(keypress);
   }
 });
