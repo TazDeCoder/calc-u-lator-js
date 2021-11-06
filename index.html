@@ -18,10 +18,10 @@
     <title>Calculator</title>
   </head>
   <body>
+    <h1 class="headline">Calculator</h1>
     <main class="main">
-      <h1 class="main__title">Calculator</h1>
-      <p class="label label--display">0</p>
       <div class="container container--keypad">
+        <p class="keypad__label keypad__label--display">0</p>
         <section class="keypad keypad--dock">
           <button class="keypad__btn" value="7">7</button>
           <button class="keypad__btn" value="8">8</button>
@@ -45,6 +45,12 @@
           <button class="keypad__btn keypad__btn--divide" value="/">&divide;</button>
           <button class="keypad__btn keypad__btn--equals" value="=">&equals;</button>
         </section>
+      </div>
+      <div class="container container--aside">
+        <p class="aside__label aside__label--title">History</p>
+        <section class="aside aside--history">
+          </section>
+        <button class="aside__btn aside__btn--clear">Clear</button>
       </div>
     <script src="./app.js"></script>
   </body>

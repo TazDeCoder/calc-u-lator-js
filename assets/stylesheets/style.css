@@ -15,7 +15,7 @@ html {
 }
 body {
   font-family: monospace;
-  background-color: rgb(39, 36, 36);
+  background-color: #272424;
 }
 nav,
 button,
@@ -31,33 +31,46 @@ iframe {
   max-width: 100%;
   height: auto;
 }
+/* Custom CSS properties */
 :root {
-  --color-primary: #015ae9;
-  --color-secondary: #d1681d;
-  --color-primary-darker: #003ea1;
-  --color-primary-border: #000;
+  --color-grey: #9aa7a7;
+  --color-blue: #015ae9;
+  --color-green: #40bf77;
+  --color-red: #e54624;
+  --color-orange: #fb6901;
+  --color-yellow: #fff700;
+  --color-darkgrey: #7a8585;
+  --color-darkblue: #003ea1;
+  --color-darkgreen: #32945c;
+  --color-darkred: #bb3d21;
+  --color-darkorange: #cc5500;
+  --color-darkyellow: #dad200;
+}
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: white;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--color-grey);
+}
+::-webkit-scrollbar-track:hover {
+  background-color: var(--color-darkgrey);
 }
 
 /* Content */
 
-/* 
- * 
- * Keypad Buttons
- *
- */
-
-.keypad__btn {
-  font-family: monospace;
-  border: 2px solid var(--color-primary-border);
-  background-color: var(--color-primary);
-  cursor: pointer;
-}
-.keypad__btn:hover {
-  background-color: var(--color-primary-darker);
-  cursor: url("/assets/images/cursors/pointer.cur"), auto;
-}
-.keypad__btn--active:hover {
-  background-color: var(--color-secondary);
+.headline {
+  width: 90%;
+  margin: 12px auto;
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 300;
+  font-size: 3.2rem;
+  text-align: center;
+  color: white;
+  cursor: default;
 }
 
 /* 
@@ -68,46 +81,80 @@ iframe {
  */
 
 .main {
-  width: 90%;
+  display: flex;
+  width: 80%;
+  height: 60%;
   padding: 15px;
   margin: 22px auto;
   font-size: 1rem;
-  border: 7px solid #2e8b57;
-  border-radius: 5px;
-  background-color: #adff2f;
   cursor: url("/assets/images/cursors/default.cur"), auto;
-}
-.main__title {
-  width: 90%;
-  margin: 12px auto;
-  font-family: "Titillium Web", sans-serif;
-  font-weight: 300;
-  font-size: 3.2em;
-  text-align: center;
-  color: #fff;
-  cursor: default;
 }
 .container {
   width: 90%;
   margin: 0 auto;
+  font-size: 1rem;
 }
 
+@media only screen and (min-width: 768px) {
+  .container {
+    margin: 0 5px;
+  }
+}
+
+/* 
+ * 
+ * Container Keypad
+ *
+ *
+ */
+
+.container--keypad {
+  display: inline-block;
+  width: 100%;
+  padding: 12px;
+  border: 7px solid var(--color-darkgreen);
+  border-radius: 5px;
+  background-color: var(--color-green);
+}
+.keypad {
+  margin: 12px 0;
+}
 /* Calculator display */
-.label--display {
+.keypad__label--display {
   width: 80%;
   height: 2rem;
   padding: 2px;
   margin: 0 auto;
   font-size: 1.5em;
   text-align: right;
-  border: 2px solid var(--color-primary-border);
+  border: 2px solid black;
   border-radius: 12px;
-  background-color: #9aa7a7;
+  background-color: var(--color-grey);
   cursor: pointer;
 }
-.label--display:hover {
-  background-color: #7a8585;
+.keypad__label--display:hover {
+  background-color: var(--color-darkgrey);
   cursor: url("/assets/images/cursors/pointer.cur"), auto;
+}
+/* Keypad buttons*/
+.keypad__btn {
+  font-family: monospace;
+  border: 2px solid black;
+  background-color: var(--color-blue);
+  cursor: pointer;
+}
+.keypad__btn:hover {
+  background-color: var(--color-darkblue);
+  cursor: url("/assets/images/cursors/pointer.cur"), auto;
+}
+.keypad__btn--active:hover {
+  background-color: var(--color-red);
+}
+
+@media only screen and (min-width: 768px) {
+  .container--keypad {
+    width: 70%;
+  }
 }
 
 /* 
@@ -126,7 +173,6 @@ iframe {
   justify-content: center;
   align-items: center;
   width: 70%;
-  margin: 12px 0;
   font-size: 1em;
   text-align: center;
 }
@@ -138,7 +184,7 @@ iframe {
 .keypad__btn--clear {
   grid-column: 2 / 4;
   font-size: 2.9em;
-  color: #ffc400;
+  color: var(--color-orange);
 }
 
 /* 
@@ -163,8 +209,75 @@ iframe {
   margin: 1px;
   font-weight: 600;
   font-size: 2.1em;
-  color: #fff700;
+  color: var(--color-yellow);
 }
 .keypad--aside .keypad__btn--active {
-  background-color: var(--color-secondary);
+  background-color: var(--color-red);
+}
+
+/* 
+ * 
+ * Container Aside
+ *
+ *
+ */
+
+.container--aside {
+  display: none;
+  width: 40%;
+  padding: 12px;
+  border: 7px solid var(--color-darkred);
+  border-radius: 5px;
+  background-color: black;
+}
+/* History */
+.aside__label--title {
+  margin: 12px;
+  font-size: 1.7em;
+  font-weight: 500;
+  color: white;
+}
+
+@media only screen and (min-width: 768px) {
+  .container--aside {
+    display: inline-block;
+  }
+}
+
+/* 
+ * 
+ *
+ * Aside History
+ *
+ */
+
+.aside--history {
+  height: 70%;
+  padding: 12px;
+  border: 2px solid var(--color-red);
+  overflow: auto;
+  background-color: black;
+}
+.aside__line {
+  display: block;
+  padding: 5px;
+  margin: 5px auto;
+  font-size: 1.2em;
+  text-align: center;
+  color: white;
+  border-radius: 5px;
+  background-color: var(--color-grey);
+}
+.aside__btn--clear {
+  display: block;
+  width: 50%;
+  margin: 5px auto;
+  font-size: 1.1em;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: var(--color-orange);
+}
+.aside__btn--clear:hover {
+  background-color: var(--color-darkorange);
+  cursor: url("/assets/images/cursors/pointer.cur"), auto;
 }
