@@ -21,29 +21,31 @@
     <main class="main">
       <h1 class="main__title">Calculator</h1>
       <p class="label label--display">0</p>
-      <section class="keypad keypad--dock">
-        <button class="keypad__btn" value="7">7</button>
-        <button class="keypad__btn" value="8">8</button>
-        <button class="keypad__btn" value="9">9</button>
-        <button class="keypad__btn" value="4">4</button>
-        <button class="keypad__btn" value="5">5</button>
-        <button class="keypad__btn" value="6">6</button>
-        <button class="keypad__btn" value="1">1</button>
-        <button class="keypad__btn" value="2">2</button>
-        <button class="keypad__btn" value="3">3</button>
-        <button class="keypad__btn" value="-">&plusmn;</button>
-        <button class="keypad__btn" value="0">0</button>
-        <button class="keypad__btn" value=".">.</button>
-        <button class="keypad__btn" value="00">00</button>
-        <button class="keypad__btn keypad__btn--clear" value="clear">C</button>
-      </section>
-      <section class="keypad keypad--aside">
-        <button class="keypad__btn keypad__btn--plus" value="+">&plus;</button>
-        <button class="keypad__btn keypad__btn--minus" value="-">&minus;</button>
-        <button class="keypad__btn keypad__btn--times" value="*">&times;</button>
-        <button class="keypad__btn keypad__btn--divide" value="/">&divide;</button>
-        <button class="keypad__btn keypad__btn--equals" value="=">&equals;</button>
-      </section>
+      <div class="container container--keypad">
+        <section class="keypad keypad--dock">
+          <button class="keypad__btn" value="7">7</button>
+          <button class="keypad__btn" value="8">8</button>
+          <button class="keypad__btn" value="9">9</button>
+          <button class="keypad__btn" value="4">4</button>
+          <button class="keypad__btn" value="5">5</button>
+          <button class="keypad__btn" value="6">6</button>
+          <button class="keypad__btn" value="1">1</button>
+          <button class="keypad__btn" value="2">2</button>
+          <button class="keypad__btn" value="3">3</button>
+          <button class="keypad__btn" value="-">&plusmn;</button>
+          <button class="keypad__btn" value="0">0</button>
+          <button class="keypad__btn" value=".">.</button>
+          <button class="keypad__btn" value="00">00</button>
+          <button class="keypad__btn keypad__btn--clear" value="clear">C</button>
+        </section>
+        <section class="keypad keypad--aside">
+          <button class="keypad__btn keypad__btn--plus" value="+">&plus;</button>
+          <button class="keypad__btn keypad__btn--minus" value="-">&minus;</button>
+          <button class="keypad__btn keypad__btn--times" value="*">&times;</button>
+          <button class="keypad__btn keypad__btn--divide" value="/">&divide;</button>
+          <button class="keypad__btn keypad__btn--equals" value="=">&equals;</button>
+        </section>
+      </div>
     <script src="./app.js"></script>
   </body>
 </html>
