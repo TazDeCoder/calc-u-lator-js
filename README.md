@@ -12,10 +12,11 @@ Do some real simple calculations!
 
 - Modern User Interface
 - Keyboard Support
+- **NEW**: History Tab
 
 **TASK-LIST:**
 
-_None at the moment, but feel free to suggest any improvements :)_
+**_None at the moment, but feel free to suggest any :)_**
 
 ## Installation
 
