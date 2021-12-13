@@ -1,18 +1,20 @@
 # Calculator
 
-## Demo Preview
+## Screenshots
 
-![Demo Preview](/assets/images/demo-preview.png)
+![screenshots-0](/assets/images/screenshots-0.png)
+![screenshots-1](/assets/images/screenshots-1.png)
+![screenshots-2](/assets/images/screenshots-2.png)
 
 ## Description
 
-Do some real simple calculations!
+Do Some Real, Simple Calculations!
 
 **Features:**
 
 - Modern User Interface
 - Keyboard Support
-- **NEW**: History Tab
+- History Tab
 
 **TASK-LIST:**
 
