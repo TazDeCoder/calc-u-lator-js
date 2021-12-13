@@ -23,13 +23,12 @@ a {
   min-width: 48px;
   min-height: 48px;
 }
-img,
-embed,
-object,
-video,
+/* prettier-ignore */
+img, embed,
+object, video,
 iframe {
-  max-width: 100%;
-  height: auto;
+   max-width: 100%;
+   height: auto;
 }
 /* Custom CSS properties */
 :root {
@@ -46,125 +45,118 @@ iframe {
   --color-darkorange: #cc5500;
   --color-darkyellow: #dad200;
 }
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 7px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: white;
-}
-::-webkit-scrollbar-track {
-  background-color: var(--color-grey);
-}
-::-webkit-scrollbar-track:hover {
-  background-color: var(--color-darkgrey);
-}
 
-/* Content */
+/*
+================================
+ Content
 
-.headline {
-  width: 90%;
-  margin: 12px auto;
-  font-family: "Titillium Web", sans-serif;
-  font-weight: 300;
-  font-size: 3.2rem;
-  text-align: center;
-  color: white;
-  cursor: default;
+================================
+*/
+
+/* General elements */
+
+/* Buttons */
+.btn--active {
+  background-color: var(--color-red);
 }
 
 /* 
- * Main 
  *
+ * Head
+ *
+ *
+ */
+
+.head {
+  width: 100%;
+  height: 3rem;
+}
+.head__label--title {
+  width: 90%;
+  margin: 1rem auto;
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 600;
+  font-size: 3.2rem;
+  text-align: center;
+  color: white;
+}
+
+/* 
+ *
+ * Main
  *
  *
  */
 
 .main {
+  margin-top: 3rem;
+  width: 100%;
+  height: 100%;
+}
+.main__content {
   display: flex;
   width: 80%;
   height: 60%;
-  padding: 15px;
-  margin: 22px auto;
-  font-size: 1rem;
+  padding: 1rem;
+  margin: 1.5rem auto;
   cursor: url("/assets/images/cursors/default.cur"), auto;
 }
-.container {
+
+/* 
+ *
+ * Main
+ *
+ * * * Content
+ *
+ *
+ */
+
+.main .content__container {
   width: 90%;
+  padding: 1rem;
   margin: 0 auto;
   font-size: 1rem;
+  border-radius: 5px;
+  cursor: inherit;
 }
-
-@media only screen and (min-width: 768px) {
-  .container {
-    margin: 0 5px;
-  }
-}
-
-/* 
- * 
- * Container Keypad
- *
- *
- */
-
-.container--keypad {
+.main .content__container--left {
   display: inline-block;
   width: 100%;
-  padding: 12px;
-  border: 7px solid var(--color-darkgreen);
-  border-radius: 5px;
   background-color: var(--color-green);
+  border: 7px solid var(--color-darkgreen);
 }
-.keypad {
-  margin: 12px 0;
-}
-/* Calculator display */
-.keypad__label--display {
-  width: 80%;
-  height: 2rem;
-  padding: 2px;
-  margin: 0 auto;
-  font-size: 1.5em;
-  text-align: right;
-  border: 2px solid black;
-  border-radius: 12px;
-  background-color: var(--color-grey);
-  cursor: pointer;
-}
-.keypad__label--display:hover {
-  background-color: var(--color-darkgrey);
-  cursor: url("/assets/images/cursors/pointer.cur"), auto;
-}
-/* Keypad buttons*/
-.keypad__btn {
-  font-family: monospace;
-  border: 2px solid black;
-  background-color: var(--color-blue);
-  cursor: pointer;
-}
-.keypad__btn:hover {
-  background-color: var(--color-darkblue);
-  cursor: url("/assets/images/cursors/pointer.cur"), auto;
-}
-.keypad__btn--active:hover {
-  background-color: var(--color-red);
+.main .content__container--right {
+  display: none;
+  width: 40%;
+  background-color: black;
+  border: 7px solid var(--color-darkred);
 }
 
 @media only screen and (min-width: 768px) {
-  .container--keypad {
-    width: 70%;
+  .main .content__container {
+    margin: 0 5px;
+  }
+  .main .content__container--right {
+    display: inline-block;
   }
 }
 
 /* 
- * 
  *
- * Keypad Dock
+ * Main
+ *
+ * * * Content
+ *
+ * * * * * Keypad
+ *
  *
  */
 
-.keypad--dock {
+.main .content .keypad__item {
+  margin: 12px 0;
+  cursor: url("/assets/images/cursors/pointer.cur"), auto;
+}
+.main .content .keypad__item--dock {
   display: inline-grid;
   grid-template-rows: repeat(4, 1fr);
   grid-row-gap: 2px;
@@ -173,111 +165,137 @@ iframe {
   justify-content: center;
   align-items: center;
   width: 70%;
-  font-size: 1em;
   text-align: center;
 }
-.keypad--dock .keypad__btn {
-  font-weight: 500;
-  font-size: 1.9em;
-  border-radius: 5px;
+.main .content .keypad__item--aside {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  width: 20%;
 }
-.keypad__btn--clear {
-  grid-column: 2 / 4;
-  font-size: 2.9em;
-  color: var(--color-orange);
+.main .content .keypad__label--display {
+  width: 80%;
+  height: 2rem;
+  padding: 2px;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  text-align: right;
+  background-color: var(--color-grey);
+  border: 2px solid black;
+  border-radius: 12px;
+}
+.main .content .keypad__label--display:hover {
+  background-color: var(--color-darkgrey);
+}
+
+@media only screen and (min-width: 768px) {
+  .main .content .keypad__item--dock {
+    width: 70%;
+  }
 }
 
 /* 
- * 
  *
- * Keypad Aside
+ * Main
+ *
+ * * * Content
+ *
+ * * * * * Keypad
+ *
+ * * * * * * * Item
+ *
  *
  */
 
-.keypad--aside {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  width: 20%;
+.main .content .keypad .item__btn {
+  font-family: monospace;
+  background-color: var(--color-blue);
+  border: 2px solid black;
 }
-.keypad--aside .keypad__btn {
+.main .content .keypad .item__btn:hover {
+  background-color: var(--color-darkblue);
+  cursor: inherit;
+}
+.main .content .keypad .item__btn--clear {
+  grid-column: 2 / 4;
+  font-size: 2.9rem;
+  color: var(--color-orange);
+}
+.main .content .keypad__item--dock .item__btn {
+  font-weight: 500;
+  font-size: 1.9rem;
+  border-radius: 5px;
+}
+.main .content .keypad__item--aside .item__btn {
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
   width: 50%;
   margin: 1px;
   font-weight: 600;
-  font-size: 2.1em;
+  font-size: 2.1rem;
   color: var(--color-yellow);
-}
-.keypad--aside .keypad__btn--active {
-  background-color: var(--color-red);
 }
 
 /* 
- * 
- * Container Aside
+ *
+ * Main
+ *
+ * * * Content
+ *
+ * * * * * Aside
  *
  *
  */
 
-.container--aside {
-  display: none;
-  width: 40%;
-  padding: 12px;
-  border: 7px solid var(--color-darkred);
-  border-radius: 5px;
-  background-color: black;
-}
-/* History */
-.aside__label--title {
-  margin: 12px;
-  font-size: 1.7em;
+.main .content .aside__label--title {
+  margin: 1rem;
+  font-size: 1.7rem;
   font-weight: 500;
   color: white;
 }
-
-@media only screen and (min-width: 768px) {
-  .container--aside {
-    display: inline-block;
-  }
-}
-
-/* 
- * 
- *
- * Aside History
- *
- */
-
-.aside--history {
+.main .content .aside__content--history {
   height: 70%;
   padding: 12px;
   border: 2px solid var(--color-red);
   overflow: auto;
   background-color: black;
 }
-.aside__line {
-  display: block;
-  padding: 5px;
-  margin: 5px auto;
-  font-size: 1.2em;
-  text-align: center;
-  color: white;
-  border-radius: 5px;
-  background-color: var(--color-grey);
-}
-.aside__btn--clear {
+.main .content .aside__btn--clear {
   display: block;
   width: 50%;
   margin: 5px auto;
-  font-size: 1.1em;
+  font-size: 1.1rem;
+  background-color: var(--color-orange);
   border: 2px solid black;
   border-radius: 5px;
-  background-color: var(--color-orange);
 }
-.aside__btn--clear:hover {
+.main .content .aside__btn--clear:hover {
   background-color: var(--color-darkorange);
   cursor: url("/assets/images/cursors/pointer.cur"), auto;
+}
+
+/* 
+ *
+ * Main
+ *
+ * * * Content
+ *
+ * * * * * Aside
+ *
+ * * * * * * * Content
+ *
+ *
+ */
+
+.main .content .aside .content__label {
+  display: block;
+  padding: 5px;
+  margin: 5px auto;
+  font-size: 1.2rem;
+  text-align: center;
+  color: white;
+  background-color: var(--color-grey);
+  border-radius: 5px;
 }
