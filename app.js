@@ -8,29 +8,28 @@
 const keypadDock = document.querySelector(".keypad__item--dock");
 const keypadAside = document.querySelector(".keypad__item--aside");
 const asideHistory = document.querySelector(".aside__content--history");
-// Labels
-const labelDisplay = document.querySelector(".keypad__label--display");
 // Buttons
 const btnPlus = document.querySelector(".item__btn--plus");
 const btnMinus = document.querySelector(".item__btn--minus");
 const btnTimes = document.querySelector(".item__btn--times");
 const btnDivide = document.querySelector(".item__btn--divide");
 const btnEquals = document.querySelector(".item__btn--equals");
-const btnClearCalc = document.querySelector(".item__btn--clear");
 const btnClearHist = document.querySelector(".aside__btn--clear");
+// Labels
+const labelDisplay = document.querySelector(".keypad__label--display");
 
 ////////////////////////////////////////////////
 ////// Public API Modules
 ///////////////////////////////////////////////
 
-// Module that performs mathematical calculations
+// Module that performs simple mathematical calculations
 const calculator = (function module() {
   const add = (a, b) => a + b;
   const subtract = (a, b) => a - b;
   const multiply = (a, b) => a * b;
   const divide = (a, b) => a / b;
 
-  var publicAPI = {
+  const publicAPI = {
     add: add,
     subtract: subtract,
     multiply: multiply,
@@ -45,140 +44,71 @@ const calculator = (function module() {
 ///////////////////////////////////////////////
 
 class App {
-  #currNum;
-  #currOper;
+  #currNumber;
+  #currOperator;
 
   constructor() {
-    this._loadApp();
     // Add event handlers
     document.addEventListener("keyup", this._handleKeyupPress.bind(this));
-    keypadDock.addEventListener("mousedown", this._handleDockEvents);
-    keypadDock.addEventListener("mouseup", this._handleDockEvents);
     keypadDock.addEventListener("click", this._handleDockEvents.bind(this));
     keypadAside.addEventListener("click", this._handleAsideEvents.bind(this));
-    btnEquals.addEventListener("click", this._displayCalc.bind(this));
-    btnClearCalc.addEventListener("click", this._clearCalc.bind(this));
     btnClearHist.addEventListener("click", this._clearHist);
   }
 
-  _loadApp() {
-    this._clearCalc();
-    this._clearHist();
-  }
+  /////////////////////////////////////
+  //////////// Helper functions
 
   _updateDisplay(str) {
-    if (str) labelDisplay.textContent = str;
+    labelDisplay.textContent = str;
   }
 
-  _displayCalc() {
-    if (this.#currNum) {
-      const [num1, num2] = this._calcNumbers(this.#currOper.value);
-      this._deactivateOpers();
-      btnEquals.blur();
-      btnEquals.classList.add("btn--active");
-      this._updateDisplay(this.#currNum);
-      this._updateHist(num1, num2, this.#currNum);
-    }
-  }
-
-  _clearCalc() {
-    this.#currOper = "";
-    this.#currNum = 0;
-    labelDisplay.textContent = "0";
-    this._deactivateOpers();
-  }
-
-  _clearHist() {
-    if (!asideHistory.firstChild) return;
-    while (asideHistory.firstChild)
-      asideHistory.removeChild(asideHistory.firstChild);
-  }
-
-  _updateHist(num1, num2, num3) {
-    const p = document.createElement("p");
-    p.textContent = `${num1} ${this.#currOper.value} ${num2} = ${num3}`;
-    p.classList.add("content__label");
-    asideHistory.appendChild(p);
-  }
-
-  _calcNumbers(oper) {
-    var tempNum = +labelDisplay.textContent;
-    switch (oper) {
-      case "+":
-        this.#currNum = calculator.add(this.#currNum, tempNum);
-        break;
-      case "-":
-        this.#currNum = calculator.subtract(this.#currNum, tempNum);
-        break;
-      case "*":
-        this.#currNum = calculator.multiply(this.#currNum, tempNum);
-        break;
-      case "/":
-        this.#currNum = calculator.divide(this.#currNum, tempNum);
-        break;
-    }
-    return [this.#currNum, tempNum];
-  }
-
-  _keypadTriggered(keypad) {
-    if (btnEquals.classList.contains("btn--active")) return;
-    this._deactivateOpers();
-    const keypadVal = keypad?.value ?? keypad;
-    const displayStr = labelDisplay.textContent;
-    if (displayStr === "0") return this._updateDisplay(keypadVal);
-    if (
-      // Prevents > 1 decimal occurance in input string
-      // and labelDisplay exceeding > 13 chars
-      !(displayStr.includes(".") && keypadVal === ".") &&
-      displayStr.length <= 13
-    )
-      this._updateDisplay(displayStr.concat(keypadVal));
-  }
-
-  _deactivateOpers() {
-    const [...btns] = keypadAside.querySelectorAll(".item__btn");
+  _deactivateBtns(btns) {
     btns.forEach((btn) => btn.classList.remove("btn--active"));
   }
 
-  _operTriggered(oper) {
-    this.#currOper = oper;
-    if (this.#currNum && !btnEquals.classList.contains("btn--active"))
-      this._calcNumbers(this.#currOper.value);
-    else this.#currNum = +labelDisplay.textContent;
+  _clearHist() {
+    asideHistory.innerHTML = "";
+  }
 
-    oper.classList.add("btn--active");
-    this._deactivateOpers();
+  /////////////////////////////////////
+  //////////// Handler functions
+
+  _handleDockEvents(e) {
+    const clicked = e.target.closest(".item__btn");
+    if (!clicked) return;
+    // Number keypad triggered
+    if (!clicked.classList.contains("item__btn--clear"))
+      return this._keypadTriggered.call(this, clicked);
+    // Clear keypad triggered
+    this.#currOperator = "";
+    this.#currNumber = 0;
+    const [...btns] = keypadAside.querySelectorAll(".item__btn");
+    this._deactivateBtns(btns);
     this._updateDisplay("0");
   }
 
-  _handleDockEvents(e) {
-    const clicked = e.target;
-    if (!clicked) return;
-
-    if (e.type === "mousedown" || e.type === "mouseup") {
-      clicked.blur();
-      if (clicked.classList.contains("item__btn"))
-        clicked.classList.toggle("btn--active");
-    }
-    if (e.type === "click") {
-      const clicked = e.target;
-      if (!clicked) return;
-      if (
-        clicked.classList.contains("item__btn") &&
-        !clicked.classList.contains("item__btn--clear")
-      )
-        this._keypadTriggered.call(this, clicked);
-    }
-  }
-
   _handleAsideEvents(e) {
-    const clicked = e.target;
+    const clicked = e.target.closest(".item__btn");
     if (!clicked) return;
-    if (
-      clicked.classList.contains("item__btn") &&
-      !clicked.classList.contains("item__btn--equals")
-    )
-      this._operTriggered.call(this, clicked);
+    // Operator keypad triggered
+    if (!clicked.classList.contains("item__btn--equals"))
+      return this._operatorTriggered.call(this, clicked);
+    // Equals keypad triggered
+    if (!this.#currNumber) return;
+    const [num1, num2] = this._calcNumbers(this.#currOperator.value);
+    const [...btns] = keypadAside.querySelectorAll(".item__btn");
+    this._deactivateBtns(btns);
+    btnEquals.blur();
+    btnEquals.classList.add("btn--active");
+    this._updateDisplay(this.#currNumber);
+    // Updating history tab
+    const html = `
+    <p class="content__label">${num1} ${this.#currOperator.value} ${num2} = ${
+      this.#currNumber
+    }</p>
+    `;
+    // Inserting label onto history tab
+    asideHistory.insertAdjacentHTML("beforeend", html);
   }
 
   _handleKeyupPress(e) {
@@ -192,21 +122,72 @@ class App {
         return this._updateDisplay(labelDisplay.textContent.slice(0, -1));
       case "Enter":
         return this._displayCalc();
-      case "=":
-        return this._displayCalc();
       case "+":
-        return this._operTriggered.call(this, btnPlus);
+        return this._operatorTriggered.call(this, btnPlus);
       case "-":
-        return this._operTriggered.call(this, btnMinus);
+        return this._operatorTriggered.call(this, btnMinus);
       case "*":
-        return this._operTriggered.call(this, btnTimes);
+        return this._operatorTriggered.call(this, btnTimes);
       case "/":
-        return this._operTriggered.call(this, btnDivide);
+        return this._operatorTriggered.call(this, btnDivide);
       case ".":
         return this._keypadTriggered.call(this, key);
-      case "Escape":
-        return this._clearCalc();
     }
+  }
+
+  /////////////////////////////////////
+  //////////// Logic
+
+  _calcNumbers(op) {
+    const tempNum = +labelDisplay.textContent;
+
+    switch (op) {
+      case "+":
+        this.#currNumber = calculator.add(this.#currNumber, tempNum);
+        break;
+      case "-":
+        this.#currNumber = calculator.subtract(this.#currNumber, tempNum);
+        break;
+      case "*":
+        this.#currNumber = calculator.multiply(this.#currNumber, tempNum);
+        break;
+      case "/":
+        this.#currNumber = calculator.divide(this.#currNumber, tempNum);
+        break;
+    }
+
+    return [this.#currNumber, tempNum];
+  }
+
+  _keypadTriggered(keypad) {
+    if (btnEquals.classList.contains("btn--active")) return;
+    const [...btns] = keypadAside.querySelectorAll(".item__btn");
+    this._deactivateBtns(btns);
+    const keypadVal = keypad?.value ?? keypad;
+    const displayStr = labelDisplay.textContent;
+
+    if (displayStr === "0") return this._updateDisplay(keypadVal);
+
+    if (
+      // Prevents > 1 decimal occurance in input string
+      // and label exceeding > 13 characters
+      !(displayStr.includes(".") && keypadVal === ".") &&
+      displayStr.length <= 13
+    )
+      this._updateDisplay(displayStr.concat(keypadVal));
+  }
+
+  _operatorTriggered(oper) {
+    this.#currOperator = oper;
+
+    if (this.#currNumber && !btnEquals.classList.contains("btn--active"))
+      this._calcNumbers(this.#currOperator.value);
+    else this.#currNumber = +labelDisplay.textContent;
+
+    const [...btns] = keypadAside.querySelectorAll(".item__btn");
+    this._deactivateBtns(btns);
+    this._updateDisplay("0");
+    oper.classList.add("btn--active");
   }
 }
 
