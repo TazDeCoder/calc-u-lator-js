@@ -1,5 +1,7 @@
 "use strict";
 
+import "core-js/stable";
+
 ////////////////////////////////////////////////
 ////// Selecting HTML Elements
 ///////////////////////////////////////////////
@@ -67,7 +69,11 @@ class App {
   }
 
   _clearHist() {
-    asideHistory.innerHTML = "";
+    const labels = asideHistory.querySelectorAll(".content__label");
+    labels.forEach((label) => label.classList.add("hidden"));
+    setTimeout(function () {
+      asideHistory.innerHTML = "";
+    }, 1000);
   }
 
   /////////////////////////////////////
@@ -103,9 +109,10 @@ class App {
     this._updateDisplay(this.#currNumber);
     // Updating history tab
     const html = `
-    <p class="content__label">${num1} ${this.#currOperator.value} ${num2} = ${
-      this.#currNumber
-    }</p>
+      <p class="content__label label">${num1} ${
+      this.#currOperator.value
+    } ${num2} = ${this.#currNumber}
+      </p>
     `;
     // Inserting label onto history tab
     asideHistory.insertAdjacentHTML("beforeend", html);
