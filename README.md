@@ -1,4 +1,4 @@
-# Calculator
+# Calculator JS
 
 ## Screenshots
 
@@ -8,17 +8,17 @@
 
 ## Description
 
-Do Some Real Simple Calculations!
+A JavaScript application based on the Odin Project exercise - **'Calculator'**
 
 **Features:**
 
 - Modern User Interface
 - Keyboard Support
-- History Tab
+- History Log
 
-**TASK-LIST:**
+## What I've Learnt
 
-**_None at the moment, but feel free to suggest any :)_**
++ Encapsulating modules
 
 ## Installation
 
