@@ -10,61 +10,79 @@
       href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="./node_modules/@fortawesome/fontawesome-free/css/brands.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="./public/images/favicon.ico" />
     <script defer type="module" src="./src/app.js"></script>
-    <title>Calculator</title>
+    <title>Calculator JS</title>
   </head>
   <body>
     <header class="head">
-      <h1 class="head__label head__label--title">Calculator</h1>
+      <h1 class="head__label head__label--title">Calculator JS</h1>
+      <div class="head__content--socials__item">
+        <a
+          href="https://github.com/tarwat-uddin/calculator-js"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fa-brands fa-github" />
+        </a>
+      </div>
+      <div class="head__content--socials__item">
+        <a href="https://dev.to/tarwatuddin" target="_blank" rel="noopener">
+          <i class="fa-brands fa-dev" />
+        </a>
+      </div>
     </header>
 
     <main class="main">
-      <div class="main__content content">
-        <div class="content__container content__container--left keypad">
-          <p class="keypad__label keypad__label--display label">0</p>
-          <div class="keypad__item keypad__item--dock item">
-            <button class="item__btn btn" value="7">7</button>
-            <button class="item__btn btn" value="8">8</button>
-            <button class="item__btn btn" value="9">9</button>
-            <button class="item__btn btn" value="4">4</button>
-            <button class="item__btn btn" value="5">5</button>
-            <button class="item__btn btn" value="6">6</button>
-            <button class="item__btn btn" value="1">1</button>
-            <button class="item__btn btn" value="2">2</button>
-            <button class="item__btn btn" value="3">3</button>
-            <button class="item__btn btn" value="-">&plusmn;</button>
-            <button class="item__btn btn" value="0">0</button>
-            <button class="item__btn btn" value=".">.</button>
-            <button class="item__btn btn" value="00">00</button>
-            <button class="item__btn btn item__btn--clear" value="clear">
-              C
-            </button>
-          </div>
-
-          <div class="keypad__item keypad__item--aside item">
-            <button class="item__btn btn item__btn--plus" value="+">
-              &plus;
-            </button>
-            <button class="item__btn btn item__btn--minus" value="-">
-              &minus;
-            </button>
-            <button class="item__btn btn item__btn--times" value="*">
-              &times;
-            </button>
-            <button class="item__btn btn item__btn--divide" value="/">
-              &divide;
-            </button>
-            <button class="item__btn btn item__btn--equals" value="=">
-              &equals;
-            </button>
-          </div>
+      <div class="content__container content__container--left">
+        <p class="label keypad__label keypad__label--display">0</p>
+        <!-- KEYPAD NUMBER GROUP -->
+        <div class="keypad__item keypad__item--dock">
+          <button class="btn item__btn" value="7">7</button>
+          <button class="btn item__btn" value="8">8</button>
+          <button class="btn item__btn" value="9">9</button>
+          <button class="btn item__btn" value="4">4</button>
+          <button class="btn item__btn" value="5">5</button>
+          <button class="btn item__btn" value="6">6</button>
+          <button class="btn item__btn" value="1">1</button>
+          <button class="btn item__btn" value="2">2</button>
+          <button class="btn item__btn" value="3">3</button>
+          <button class="btn item__btn" value="-">&plusmn;</button>
+          <button class="btn item__btn" value="0">0</button>
+          <button class="btn item__btn" value=".">.</button>
+          <button class="btn item__btn" value="00">00</button>
+          <button class="btn item__btn item__btn--clear" value="clear">
+            C
+          </button>
         </div>
-
-        <div class="content__container content__container--right aside">
-          <h1 class="aside__label aside__label--title">History</h1>
-          <div class="aside__content aside__content--history content"></div>
-          <button class="aside__btn aside__btn--clear btn">Clear</button>
+        <!-- KEYPAD OPERATOR GROUP -->
+        <div class="keypad__item keypad__item--aside">
+          <button class="btn item__btn item__btn--plus" value="+">
+            &plus;
+          </button>
+          <button class="btn item__btn item__btn--minus" value="-">
+            &minus;
+          </button>
+          <button class="btn item__btn item__btn--times" value="*">
+            &times;
+          </button>
+          <button class="btn item__btn item__btn--divide" value="/">
+            &divide;
+          </button>
+          <button class="btn item__btn item__btn--equals" value="=">
+            &equals;
+          </button>
         </div>
+      </div>
+      <!-- HISTORY LOG -->
+      <div class="content__container content__container--right">
+        <h1 class="label aside__label aside__label--title">History</h1>
+        <div class="aside__content aside__content--history"></div>
+        <button class="btn aside__btn aside__btn--clear">Clear</button>
       </div>
     </main>
   </body>

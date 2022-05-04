@@ -101,17 +101,19 @@ class App {
       return this._operatorTriggered.call(this, clicked);
     // Equals keypad triggered
     if (!this.#currNumber) return;
-    const [num1, num2] = this._calcNumbers(this.#currOperator.value);
+    const num1 = +labelDisplay.textContent;
+    const num2 = this.#currNumber;
+    const result = this._calcNumbers(this.#currOperator.value);
     const [...btns] = keypadAside.querySelectorAll(".item__btn");
     this._deactivateBtns(btns);
     btnEquals.blur();
     btnEquals.classList.add("btn--active");
-    this._updateDisplay(this.#currNumber);
+    this._updateDisplay(result);
     // Updating history tab
     const html = `
-      <p class="content__label label">${num1} ${
+      <p class="content__label label">${num2} ${
       this.#currOperator.value
-    } ${num2} = ${this.#currNumber}
+    } ${num1} = ${result}
       </p>
     `;
     // Inserting label onto history tab
@@ -163,7 +165,7 @@ class App {
         break;
     }
 
-    return [this.#currNumber, tempNum];
+    return this.#currNumber;
   }
 
   _keypadTriggered(keypad) {
