@@ -2,9 +2,9 @@
 
 ## Screenshots
 
-![screenshots-0](/screenshots/screenshots-0.png)
-![screenshots-1](/screenshots/screenshots-1.png)
-![screenshots-2](/screenshots/screenshots-2.png)
+<img src="./public/images/screenshots/screenshots-2.png" width="45%" align="left" />
+<img src="./public/images/screenshots/screenshots-0.png" width="50%" align="center" />
+<img src="./public/images/screenshots/screenshots-1.png" width="50%" align="center" /> 
 
 ## Description
 
