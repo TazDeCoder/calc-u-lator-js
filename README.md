@@ -1,10 +1,9 @@
-# Calculator JS
+# Calc-u-lator JS
 
 ## Screenshots
 
-<img src="./public/images/screenshots/screenshots-2.png" width="45%" align="left" />
-<img src="./public/images/screenshots/screenshots-0.png" width="50%" align="center" />
-<img src="./public/images/screenshots/screenshots-1.png" width="50%" align="center" /> 
+<img src="./public/images/screenshots/screenshots-1.png" width="65%"></img> 
+<img src="./public/images/screenshots/screenshots-2.png" width="30%"></img>
 
 ## Description
 
@@ -26,7 +25,7 @@ To use this project, first clone the repo on your device using the command below
 
 `git init`
 
-`https://github.com/tarwat-uddin/calculator-js.git`
+`https://github.com/tarwat-uddin/calc-u-lator-js.git`
 
 ## License
 
